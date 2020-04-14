@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Monster Slayer Game</title>
+    <link
+      rel="stylesheet"
+      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div :class="['game']">
+        <div :class="['arena']">
+          <div :class="['you']">
+            <h2>YOU</h2>
+            <div :class="['health-bar-outer']">
+              <div :style="[health(youHealth)]" :class="['health-bar-inner']">
+                <span :class="['health']">{{ youHealth }}</span>
+              </div>
+            </div>
+          </div>
+          <div :class="['monster']">
+            <h2>MONSTER</h2>
+            <div :class="['health-bar-outer']">
+              <div
+                :style="[health(monsterHealth)]"
+                :class="['health-bar-inner']"
+              >
+                <span :class="['health']">{{ monsterHealth }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div :class="['game-ui', 'shadow']">
+          <div :class="['buttons']" v-if="gameOver">
+            <button
+              :class="['button', 'shadow', 'bg-green']"
+              @click="gameOver = false"
+            >
+              Start New Game
+            </button>
+          </div>
+          <div class="buttons" v-else>
+            <button
+              :class="['button', 'shadow', 'bg-red']"
+              @click="attack('🗡')"
+            >
+              Attack (🗡)
+            </button>
+            <button
+              :class="['button', 'shadow', 'bg-yellow']"
+              @click="attack('🔥')"
+            >
+              <span>Special Attack (🔥)</span>
+              <span :class="['cooldown']">
+                <template v-if="specialAttackCooldown === 0">
+                  Ready
+                </template>
+                <template v-else>
+                  Cooldown: {{ specialAttackCooldown }} turn
+                </template>
+              </span>
+            </button>
+            <button
+              :class="['button', 'flex-button', 'shadow', 'bg-green']"
+              @click="attack('🧪')"
+            >
+              <span>Heal (🧪)</span>
+              <span :class="['cooldown']">
+                <template v-if="healCooldown === 0">
+                  Ready
+                </template>
+                <template v-else>
+                  Cooldown: {{ healCooldown }} turn
+                </template>
+              </span>
+            </button>
+            <button :class="['button', 'shadow']" @click="surrender">
+              Surrender (🏳)
+            </button>
+          </div>
+        </div>
+        <div :class="['battle-info', 'shadow']">
+          <template v-for="(turn, index) in battleInfo">
+            <p
+              :key="index"
+              :class="['attack', {'bg-light-red': turn.attacker === 'Monster', 'text-dark-red': turn.attacker === 'Monster', 'bg-light-blue': turn.attacker === 'You', 'text-dark-blue': turn.attacker === 'You'}]"
+            >
+              <template v-if="turn.attackType === '🧪'">
+                {{ turn.attacker }} {{ turn.attackType }} himself for {{
+                turn.heal }}
+              </template>
+              <template v-else>
+                {{ turn.attacker }} {{ turn.attackType }} {{ turn.defender }}
+                for '{{ turn.damage }}' damage.
+              </template>
+            </p>
+          </template>
+        </div>
+      </div>
+    </div>
+    <script src="../vue.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

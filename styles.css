@@ -24,7 +24,7 @@ body {
 
 .button {
   padding: 20px;
-  font-size: 1.5rem;
+  margin: 0 10px;
   text-transform: uppercase;
   letter-spacing: -0.5px;
   border: 0;
@@ -145,8 +145,7 @@ body {
 .buttons {
   display: flex;
   margin: 20px auto;
-  width: 70%;
-  justify-content: space-evenly;
+  justify-content: center;
 }
 
 /* BATTLE-INFO */
